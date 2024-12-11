@@ -1,5 +1,5 @@
 module "emr" {
-  source = "./modules/main.tf"
+  source = "./modules"
 
   name = "Demo-instance-group"
 
