@@ -1,7 +1,7 @@
 module "emr" {
-  source = "terraform-aws-modules/emr/aws"
+  source = "./main.tf"
 
-  name = "example-instance-group"
+  name = "Demo-instance-group"
 
   release_label = "emr-6.9.0"
   applications  = ["spark", "trino"]
@@ -9,28 +9,28 @@ module "emr" {
     idle_timeout = 3600
   }
 
-  bootstrap_action = {
-    example = {
-      name = "Just an example",
-      path = "file:/bin/echo",
-      args = ["Hello World!"]
-    }
-  }
+  # bootstrap_action = {
+  #   example = {
+  #     name = "Just an example",
+  #     path = "file:/bin/echo",
+  #     args = ["Hello World!"]
+  #   }
+  # }
 
-  configurations_json = jsonencode([
-    {
-      "Classification" : "spark-env",
-      "Configurations" : [
-        {
-          "Classification" : "export",
-          "Properties" : {
-            "JAVA_HOME" : "/usr/lib/jvm/java-1.8.0"
-          }
-        }
-      ],
-      "Properties" : {}
-    }
-  ])
+  # configurations_json = jsonencode([
+  #   {
+  #     "Classification" : "spark-env",
+  #     "Configurations" : [
+  #       {
+  #         "Classification" : "export",
+  #         "Properties" : {
+  #           "JAVA_HOME" : "/usr/lib/jvm/java-1.8.0"
+  #         }
+  #       }
+  #     ],
+  #     "Properties" : {}
+  #   }
+  # ])
 
   master_instance_group = {
     name           = "master-group"
@@ -63,12 +63,12 @@ module "emr" {
     # Instance groups only support one Subnet/AZ
     # Subnets should be private subnets and tagged with
     # { "for-use-with-amazon-emr-managed-policies" = true }
-    subnet_id = "subnet-abcde012"
+    subnet_id = "subnet-081a9c02f5550f085"
   }
-  vpc_id = "vpc-1234556abcdef"
+  vpc_id = "vpc-042fdfc7b9667f1ba"
 
   list_steps_states  = ["PENDING", "RUNNING", "FAILED", "INTERRUPTED"]
-  log_uri            = "s3://my-elasticmapreduce-bucket/"
+  log_uri            = "s3://my-demo-emr-bucket/"
 
   scale_down_behavior    = "TERMINATE_AT_TASK_COMPLETION"
   step_concurrency_level = 3
